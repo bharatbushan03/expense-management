@@ -1,0 +1,8 @@
+{
+  "name": "SmartSpend AI",
+  "description": "A modern, AI-powered expense tracker and financial management dashboard featuring smart receipt scanning, budget alerts, and automated financial insights.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
