@@ -10,7 +10,8 @@ const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 export const analyzeReceiptImage = async (base64Image: string): Promise<Partial<Transaction> | null> => {
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash-image',
+      // Using gemini-3-flash-preview for multimodal analysis and reliable JSON schema support
+      model: 'gemini-3-flash-preview',
       contents: {
         parts: [
           {
@@ -40,6 +41,7 @@ export const analyzeReceiptImage = async (base64Image: string): Promise<Partial<
       }
     });
 
+    // Access .text property directly as per latest SDK guidelines
     const text = response.text;
     if (!text) return null;
     return JSON.parse(text);
@@ -73,6 +75,7 @@ export const generateFinancialInsights = async (transactions: Transaction[]): Pr
       }
     });
 
+    // Access .text property directly
     return response.text || "[]";
   } catch (error) {
     console.error("Error generating insights:", error);
@@ -89,6 +92,7 @@ export const suggestCategory = async (note: string, amount: number): Promise<str
             model: 'gemini-3-flash-preview',
             contents: `Categorize a transaction described as "${note}" with amount ${amount} into one of: Food, Travel, Rent, Bills, Shopping, Custom. Return only the category name.`
         });
+        // Access .text property and trim for safety
         return response.text?.trim() || 'Custom';
     } catch (e) {
         return 'Custom';
