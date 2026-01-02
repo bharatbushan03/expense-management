@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { useNavigate, Link } from 'react-router-dom';
-import { Lock, Mail, User, ArrowRight, Wallet, Loader2 } from 'lucide-react';
+import { Lock, Mail, User, ArrowRight, Wallet, Loader2, CheckCircle } from 'lucide-react';
 
 const Register: React.FC = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
   const { register, error, loading } = useAuth();
   const navigate = useNavigate();
 
@@ -14,16 +15,60 @@ const Register: React.FC = () => {
     e.preventDefault();
 
     if (password.length < 6) {
-        // Basic validation before hitting Firebase
         alert("Password must be at least 6 characters");
+        return;
+    }
+
+    // Strict Email Validation
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,10}$/;
+    if (!emailRegex.test(email)) {
+        alert("Please enter a valid email address.");
+        return;
+    }
+
+    // Check for common gmail typos
+    const domain = email.split('@')[1].toLowerCase();
+    if (domain.includes('gmail') && domain !== 'gmail.com') {
+        alert("It looks like you meant gmail.com. Please check your email address for typos.");
         return;
     }
 
     const success = await register(name, email, password);
     if (success) {
-      navigate('/');
+      setRegistrationSuccess(true);
     }
   };
+
+  if (registrationSuccess) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white p-6">
+        <div className="max-w-md w-full text-center space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+           <div className="mx-auto w-20 h-20 bg-green-100 rounded-full flex items-center justify-center shadow-lg shadow-green-100">
+             <CheckCircle className="w-10 h-10 text-green-600" />
+           </div>
+           <div>
+            <h2 className="text-3xl font-bold text-slate-900 tracking-tight">Verify your email</h2>
+            <p className="mt-4 text-lg text-slate-600 leading-relaxed">
+                We've sent a verification link to <br/>
+                <span className="font-bold text-slate-900">{email}</span>. 
+            </p>
+            <p className="mt-2 text-slate-500">
+                Please check your inbox and click the link to activate your account before logging in.
+            </p>
+           </div>
+           
+           <div className="pt-4 space-y-4">
+             <Link to="/login" className="block w-full py-4 px-6 border border-transparent text-lg font-bold rounded-xl text-white bg-indigo-600 hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-200 hover:shadow-2xl hover:-translate-y-1">
+               Go to Login
+             </Link>
+             <p className="text-sm text-slate-400">
+               Did not receive the email? Check your spam folder or try registering again with a different address.
+             </p>
+           </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex bg-white">
@@ -116,7 +161,7 @@ const Register: React.FC = () => {
         </div>
       </div>
       
-      {/* Right Side - Same decoration as login for consistency */}
+      {/* Right Side - Decoration */}
       <div className="hidden lg:block relative w-0 flex-1 bg-slate-900">
          <div className="absolute inset-0 bg-gradient-to-bl from-slate-800 to-slate-900"></div>
          <div className="absolute inset-0 flex flex-col justify-center items-center p-12 text-white z-10">

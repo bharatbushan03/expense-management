@@ -57,7 +57,7 @@ export const analyzeReceiptImage = async (base64Image: string): Promise<Partial<
 export const generateFinancialInsights = async (transactions: Transaction[]): Promise<string> => {
   try {
     // Summarize data to save tokens
-    const summary = transactions.map(t => `${t.date.split('T')[0]}: ${t.type} $${t.amount} (${t.category})`).join('\n');
+    const summary = transactions.map(t => `${t.date.split('T')[0]}: ${t.type} ₹${t.amount} (${t.category})`).join('\n');
 
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',

@@ -126,12 +126,13 @@ const Transactions: React.FC = () => {
     doc.setFontSize(14);
     doc.setFont("helvetica", "bold");
     doc.setTextColor(16, 185, 129);
-    doc.text(`$${monthlyStats.income.toFixed(2)}`, 24, 58);
+    // Use "Rs." for PDF compatibility as ₹ symbol often breaks in standard fonts
+    doc.text(`Rs. ${monthlyStats.income.toFixed(2)}`, 24, 58);
     doc.setTextColor(239, 68, 68);
-    doc.text(`$${monthlyStats.expense.toFixed(2)}`, 84, 58);
+    doc.text(`Rs. ${monthlyStats.expense.toFixed(2)}`, 84, 58);
     const savingsColor = monthlyStats.savings >= 0 ? [79, 70, 229] : [245, 158, 11];
     doc.setTextColor(savingsColor[0], savingsColor[1], savingsColor[2]);
-    doc.text(`$${monthlyStats.savings.toFixed(2)}`, 144, 58);
+    doc.text(`Rs. ${monthlyStats.savings.toFixed(2)}`, 144, 58);
 
     const tableColumn = ["Date", "Type", "Category", "Description", "Amount"];
     const tableRows = filteredData.map(t => [
@@ -139,7 +140,7 @@ const Transactions: React.FC = () => {
       t.type.toUpperCase(),
       t.category,
       t.note || '',
-      `$${t.amount.toFixed(2)}`
+      `Rs. ${t.amount.toFixed(2)}`
     ]);
 
     autoTable(doc, {
@@ -247,17 +248,17 @@ const Transactions: React.FC = () => {
         <div className="flex gap-6 w-full md:w-auto justify-around md:justify-end">
            <div className="text-center md:text-right">
              <span className="text-xs text-slate-400 font-semibold uppercase block">Income</span>
-             <span className="text-emerald-600 font-bold flex items-center justify-center md:justify-end gap-1"><TrendingUp className="w-3 h-3" /> ${monthlyStats.income.toFixed(0)}</span>
+             <span className="text-emerald-600 font-bold flex items-center justify-center md:justify-end gap-1"><TrendingUp className="w-3 h-3" /> ₹{monthlyStats.income.toLocaleString('en-IN')}</span>
            </div>
            <div className="w-px bg-slate-100 h-10 hidden md:block"></div>
            <div className="text-center md:text-right">
              <span className="text-xs text-slate-400 font-semibold uppercase block">Expense</span>
-             <span className="text-rose-600 font-bold flex items-center justify-center md:justify-end gap-1"><TrendingDown className="w-3 h-3" /> ${monthlyStats.expense.toFixed(0)}</span>
+             <span className="text-rose-600 font-bold flex items-center justify-center md:justify-end gap-1"><TrendingDown className="w-3 h-3" /> ₹{monthlyStats.expense.toLocaleString('en-IN')}</span>
            </div>
            <div className="w-px bg-slate-100 h-10 hidden md:block"></div>
            <div className="text-center md:text-right">
              <span className="text-xs text-slate-400 font-semibold uppercase block">Savings</span>
-             <span className={`font-bold flex items-center justify-center md:justify-end gap-1 ${monthlyStats.savings >= 0 ? 'text-indigo-600' : 'text-amber-600'}`}><PiggyBank className="w-3 h-3" /> ${monthlyStats.savings.toFixed(0)}</span>
+             <span className={`font-bold flex items-center justify-center md:justify-end gap-1 ${monthlyStats.savings >= 0 ? 'text-indigo-600' : 'text-amber-600'}`}><PiggyBank className="w-3 h-3" /> ₹{monthlyStats.savings.toLocaleString('en-IN')}</span>
            </div>
         </div>
       </div>
@@ -311,7 +312,7 @@ const Transactions: React.FC = () => {
                     </td>
                     <td className="p-5 text-sm text-slate-700 font-medium">{t.note}</td>
                     <td className="p-5 text-right">
-                        <span className={`font-bold text-base ${t.type === 'income' ? 'text-emerald-600' : 'text-slate-900'}`}>{t.type === 'income' ? '+' : '-'} ${t.amount.toFixed(2)}</span>
+                        <span className={`font-bold text-base ${t.type === 'income' ? 'text-emerald-600' : 'text-slate-900'}`}>{t.type === 'income' ? '+' : '-'} ₹{t.amount.toLocaleString('en-IN')}</span>
                     </td>
                     <td className="p-5 text-center">
                       <button onClick={() => deleteTransaction(t.id)} className="p-2 text-slate-400 hover:text-rose-500 hover:bg-rose-50 rounded-lg transition-all opacity-0 group-hover:opacity-100 focus:opacity-100"><Trash2 className="w-4 h-4" /></button>
@@ -359,7 +360,7 @@ const Transactions: React.FC = () => {
             <div>
                 <label className="block text-xs font-bold text-slate-500 uppercase tracking-wide mb-2">Amount</label>
                 <div className="relative">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold">$</span>
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold">₹</span>
                     <input type="number" name="amount" value={form.amount} onChange={handleInputChange} className="w-full pl-8 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none font-bold text-lg text-slate-900" required />
                 </div>
             </div>

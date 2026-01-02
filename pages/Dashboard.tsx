@@ -46,7 +46,7 @@ const Dashboard: React.FC = () => {
   }, [] as any[]).slice(-7);
 
   const formatCurrency = (amount: number) => 
-    new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 0 }).format(amount);
+    new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 0 }).format(amount);
 
   const StatCard = ({ title, amount, icon: Icon, type }: any) => {
     const isPositive = type === 'income';
@@ -101,7 +101,7 @@ const Dashboard: React.FC = () => {
             <div key={index} className="flex items-center gap-2 text-sm">
                 <div className="w-2 h-2 rounded-full" style={{ backgroundColor: entry.color }} />
                 <span className="text-slate-300 capitalize">{entry.name}:</span>
-                <span className="font-bold">${entry.value}</span>
+                <span className="font-bold">₹{entry.value}</span>
             </div>
           ))}
         </div>
@@ -151,7 +151,7 @@ const Dashboard: React.FC = () => {
                         axisLine={false} 
                         tickLine={false} 
                         tick={{fill: '#94a3b8', fontSize: 12}} 
-                        tickFormatter={(val) => `$${val}`} 
+                        tickFormatter={(val) => `₹${val}`} 
                     />
                     <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#cbd5e1', strokeWidth: 1, strokeDasharray: '4 4' }} />
                     <Area 
@@ -200,7 +200,7 @@ const Dashboard: React.FC = () => {
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                     </Pie>
-                    <Tooltip formatter={(val: number) => `$${val}`} contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)' }} />
+                    <Tooltip formatter={(val: number) => `₹${val}`} contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)' }} />
                     <Legend 
                         layout="horizontal" 
                         verticalAlign="bottom" 
@@ -219,7 +219,7 @@ const Dashboard: React.FC = () => {
                                 <div className="w-3 h-3 rounded-full" style={{ backgroundColor: COLORS[idx % COLORS.length] }} />
                                 <span className="text-slate-600 font-medium">{item.name}</span>
                             </div>
-                            <span className="font-bold text-slate-800">${item.value}</span>
+                            <span className="font-bold text-slate-800">₹{item.value}</span>
                         </div>
                     ))}
                 </div>

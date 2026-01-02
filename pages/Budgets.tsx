@@ -74,7 +74,7 @@ const Budgets: React.FC = () => {
                    <div>
                        <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-1">Spent</p>
                        <p className={`text-2xl font-bold ${isOverBudget ? 'text-rose-600' : 'text-slate-900'}`}>
-                         ${spent.toFixed(0)}
+                         ₹{spent.toLocaleString('en-IN')}
                        </p>
                    </div>
                    <div className="text-right">
@@ -91,7 +91,7 @@ const Budgets: React.FC = () => {
                             <button onClick={() => handleSave(category)} className="text-xs bg-indigo-600 text-white px-2 py-1 rounded">OK</button>
                           </div>
                         ) : (
-                           <p className="text-xl font-semibold text-slate-600">${limit}</p>
+                           <p className="text-xl font-semibold text-slate-600">₹{limit.toLocaleString('en-IN')}</p>
                         )}
                    </div>
                  </div>
@@ -107,7 +107,7 @@ const Budgets: React.FC = () => {
                  <div className="flex justify-between text-xs font-medium">
                     <span className="text-slate-400">0%</span>
                     <span className={`${remaining < 100 && remaining > 0 ? 'text-amber-500' : 'text-slate-400'}`}>
-                        {remaining > 0 ? `$${remaining.toFixed(0)} remaining` : 'No budget left'}
+                        {remaining > 0 ? `₹${remaining.toLocaleString('en-IN')} remaining` : 'No budget left'}
                     </span>
                  </div>
                </div>

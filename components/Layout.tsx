@@ -76,17 +76,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             })}
           </nav>
 
-          <div className="p-4 m-4 rounded-2xl bg-slate-900 text-white relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-indigo-500 rounded-full blur-2xl opacity-20 -mr-10 -mt-10"></div>
-             <div className="relative z-10">
-                <p className="text-sm font-medium text-slate-200 mb-1">Upgrade to Pro</p>
-                <p className="text-xs text-slate-400 mb-3">Get advanced AI insights and unlimited budgets.</p>
-                <button className="text-xs font-bold bg-indigo-600 hover:bg-indigo-500 py-2 px-4 rounded-lg w-full transition-colors">
-                    Upgrade Now
-                </button>
-             </div>
-          </div>
-
           <div className="p-4 border-t border-slate-100">
             <div className="flex items-center p-2 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors group">
               {user?.avatar ? (
