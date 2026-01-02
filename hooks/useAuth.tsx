@@ -26,6 +26,7 @@ interface AuthContextType {
   register: (name: string, email: string, password: string) => Promise<boolean>;
   loginWithGoogle: () => Promise<boolean>;
   logout: () => void;
+  updateUser: (name: string) => Promise<boolean>;
   loading: boolean;
   error: string | null;
 }
@@ -42,8 +43,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       if (firebaseUser) {
         // STRICTLY enforce email verification.
-        // If the user is logged in via Firebase but email is not verified, 
-        // we do NOT set the user state. This prevents access to protected routes.
         if (firebaseUser.emailVerified) {
           setUser({
             id: firebaseUser.uid,
@@ -52,8 +51,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             avatar: firebaseUser.photoURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(firebaseUser.displayName || 'User')}&background=4F46E5&color=fff`
           });
         } else {
-          // User exists but is not verified (e.g. just registered).
-          // We ensure the internal state is null so the app treats them as logged out.
           setUser(null);
         }
       } else {
@@ -70,7 +67,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setError(null);
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       
-      // Secondary check during explicit login
       if (!userCredential.user.emailVerified) {
         await signOut(auth);
         throw new Error("Email not verified. Please check your inbox and verify your account before logging in.");
@@ -88,7 +84,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setError(null);
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
-      // Google accounts are implicitly verified usually
       return true;
     } catch (err: any) {
       setError(err.message);
@@ -101,20 +96,31 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setError(null);
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       
-      // Update the user's display name immediately
       await updateProfile(userCredential.user, {
         displayName: name
       });
       
-      // Send verification email
       await sendEmailVerification(userCredential.user);
       
-      // CRITICAL: Sign out immediately to prevent access without verification.
-      // This forces the user to go to login page and wait for verification.
       await signOut(auth);
       setUser(null);
       
       return true;
+    } catch (err: any) {
+      setError(err.message);
+      return false;
+    }
+  };
+
+  const updateUser = async (name: string): Promise<boolean> => {
+    try {
+      if (auth.currentUser) {
+        await updateProfile(auth.currentUser, { displayName: name });
+        // Update local state
+        setUser(prev => prev ? { ...prev, name } : null);
+        return true;
+      }
+      return false;
     } catch (err: any) {
       setError(err.message);
       return false;
@@ -127,7 +133,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated: !!user, login, register, loginWithGoogle, logout, loading, error }}>
+    <AuthContext.Provider value={{ user, isAuthenticated: !!user, login, register, loginWithGoogle, logout, updateUser, loading, error }}>
       {children}
     </AuthContext.Provider>
   );

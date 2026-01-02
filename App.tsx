@@ -5,6 +5,7 @@ import Dashboard from './pages/Dashboard';
 import Transactions from './pages/Transactions';
 import Budgets from './pages/Budgets';
 import Insights from './pages/Insights';
+import Settings from './pages/Settings';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -27,6 +28,7 @@ const App: React.FC = () => {
               <Route element={<Layout><Transactions /></Layout>} path="/transactions" />
               <Route element={<Layout><Budgets /></Layout>} path="/budgets" />
               <Route element={<Layout><Insights /></Layout>} path="/insights" />
+              <Route element={<Layout><Settings /></Layout>} path="/settings" />
             </Route>
 
             {/* Catch all */}

@@ -26,6 +26,16 @@ export interface Budget {
   limit: number;
 }
 
+export interface RecurringRule {
+  id: string;
+  type: TransactionType;
+  category: Category;
+  amount: number;
+  dayOfMonth: number; // 1-31
+  note: string;
+  lastProcessedDate?: string; // ISO Date string of last execution
+}
+
 export interface AIInsight {
   type: 'alert' | 'advice' | 'trend';
   message: string;

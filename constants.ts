@@ -23,4 +23,5 @@ export const NAV_ITEMS = [
   { id: 'transactions', label: 'Transactions', icon: Wallet },
   { id: 'budgets', label: 'Budgets', icon: PieChart },
   { id: 'insights', label: 'AI Insights', icon: Sparkles },
+  { id: 'settings', label: 'Settings', icon: Settings },
 ];

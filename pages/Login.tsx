@@ -43,14 +43,14 @@ const Login: React.FC = () => {
                 <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Mail className="h-5 w-5 text-slate-400" />
+                    <Mail className="h-5 w-5 text-slate-500" />
                   </div>
                   <input
                     type="email"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="block w-full pl-10 pr-3 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors outline-none bg-slate-50/50 text-slate-900 placeholder-slate-400"
+                    className="block w-full pl-10 pr-3 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors outline-none bg-slate-50 text-slate-900 placeholder-slate-400 font-medium"
                     placeholder="Enter your email"
                   />
                 </div>
@@ -60,14 +60,14 @@ const Login: React.FC = () => {
                 <label className="block text-sm font-medium text-slate-700 mb-1">Password</label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Lock className="h-5 w-5 text-slate-400" />
+                    <Lock className="h-5 w-5 text-slate-500" />
                   </div>
                   <input
                     type="password"
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="block w-full pl-10 pr-3 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors outline-none bg-slate-50/50 text-slate-900 placeholder-slate-400"
+                    className="block w-full pl-10 pr-3 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-colors outline-none bg-slate-50 text-slate-900 placeholder-slate-400 font-medium"
                     placeholder="••••••••"
                   />
                 </div>
@@ -75,7 +75,7 @@ const Login: React.FC = () => {
             </div>
 
             {error && (
-              <div className="text-red-500 text-sm text-center bg-red-50 py-2 rounded-lg border border-red-100">
+              <div className="text-red-500 text-sm text-center bg-red-50 py-2 rounded-lg border border-red-100 font-medium">
                 {error.replace("Firebase:", "").trim()}
               </div>
             )}
